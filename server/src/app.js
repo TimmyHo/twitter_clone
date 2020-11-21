@@ -6,7 +6,8 @@ const port = process.env.PORT || 4000;
 
 const publicDirPath = path.join(__dirname, '../public');
 const publicDirHtmlPath = path.join(publicDirPath, 'html');
-app.use(express.static(publicDirHtmlPath));
+app.use(express.static(publicDirPath));
+
 
 app.get('/api', (req, res) => {
   res.send({ info: 'Twitter Clone'});
