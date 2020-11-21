@@ -26,7 +26,7 @@ router.post('/',  async (req, res) => {
 });
 
 router.delete('/:post_id',  async (req, res) => {
-  Post.deleteOne({_id: req.params.post_id });
+  await Post.deleteOne({ _id: req.params.post_id });
   res.send({});
 });
 
