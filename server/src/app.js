@@ -1,9 +1,14 @@
-const express = require('express')
+const path = require('path');
+const express = require('express');
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.get('/', (req, res) => {
+const publicDirPath = path.join(__dirname, '../public');
+const publicDirHtmlPath = path.join(publicDirPath, 'html');
+app.use(express.static(publicDirHtmlPath));
+
+app.get('/api', (req, res) => {
   res.send({ info: 'Twitter Clone'});
 });
 
