@@ -12,7 +12,13 @@ const userSchema = new mongoose.Schema({
     default: 'https://www.serebii.net/pokemon/art/201.png'
   }
 }, {
-  timestamps: false
+  timestamps: false,
+  toJSON: {
+    transform(doc, ret) {
+      delete ret._id;
+      delete ret.__v;      
+    }
+  }
 });
 
 userSchema.index({

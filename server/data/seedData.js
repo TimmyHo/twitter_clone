@@ -16,8 +16,10 @@ const seedData = async () => {
 }
 
 const clearData = async () => {
+  console.log('Start clearing data');
   await User.deleteMany({});
   await Post.deleteMany({});
+  console.log('Finish clearing data\n');
 }
 
 const seedUsers = async () => {
@@ -41,7 +43,7 @@ const seedUsers = async () => {
     await user.save();
     allUsers.push(user);
   }
-  console.log(`Finished adding ${numUsers} users`);
+  console.log(`Finish adding ${numUsers} users\n`);
   
   return allUsers;
 }
@@ -56,13 +58,14 @@ const seedPosts = async (users) => {
   
     const post = new Post({
       author: randomUser._id,
-      postText: faker.lorem.sentence()
+      postText: faker.lorem.sentence(),
+      createdAt: new Date(faker.date.past())
     });
 
     await post.save();
   }
 
-  console.log(`Finished adding ${numPosts} posts`);
+  console.log(`Finish adding ${numPosts} posts\n`);
 }
 
 seedData();
