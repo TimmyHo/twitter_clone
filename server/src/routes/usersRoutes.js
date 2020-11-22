@@ -11,15 +11,42 @@ router.get('/',  async (req, res) => {
   res.send({ users: allUsers });
 });
 
-router.get('/:userName/feed/me',  async (req, res) => {
+router.get('/:userName', async (req, res) => {
+  const user = await User.findOne({ userName: req.params.userName });
+  const { userName, imageUrl } = user;
+
+  const postCount = await Post.countDocuments({
+    author: user
+  });
+
+  const followingCount = await Follow.countDocuments({
+    follower: user
+  });
+  const followerCount = await Follow.countDocuments({
+    following: user
+  });
+
+  const profile = {
+    userName, 
+    imageUrl,
+    postCount,
+    followingCount,
+    followerCount
+  }
+  
+  res.send({ profile });
+});
+
+router.get('/:userName/feed/me', async (req, res) => {
   const user = await User.find({ userName: req.params.userName });
 
   if (!user) {
     return res.send({ posts: [] });
   }
 
-  const posts = await Post.find({ author: user }).sort({ createdAt: -1 }).limit(20);
-  res.send({ posts });
+  // Don't need author since it is already known
+  const posts = await Post.find({ author: user }).select('-author').sort({ createdAt: -1 }).limit(20);
+  res.send({ user, posts });
 });
 
 // get a list of all the users who the user is following
